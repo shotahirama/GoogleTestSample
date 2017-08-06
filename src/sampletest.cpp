@@ -16,17 +16,22 @@ TEST(sampletest, string_eq_test) {
   ASSERT_NE(str1, str2);
 }
 
-bool hoge(int n) { return n > 5 ? true : false; }
+bool overfive(int n) { return n >= 5 ? true : false; }
 
 TEST(sampletest, pred_test) {
   int a = 9;
-  int b = 6;
-  ASSERT_PRED1(hoge, a);
-  ASSERT_PRED1(hoge, b);
+  int b = 5;
+  ASSERT_PRED1(overfive, a);
+  ASSERT_PRED1(overfive, b);
 }
 
-TEST(hogetest, test) {
-  int a = 0;
-  a *= 2;
-  EXPECT_EQ(a, 0);
+class TestStrings: public ::testing::TestWithParam<std::string>
+{
+};
+
+TEST_P(TestStrings, StringSize){
+  EXPECT_EQ(GetParam().size(),5);
 }
+
+INSTANTIATE_TEST_CASE_P(sampletest, TestStrings,
+::testing::Values("Hello", "Night","Cider", "Linux"));
